@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -25,10 +26,61 @@ class _TicTacToeViewState extends State<TicTacToeView> {
   late List<String> showingPatterns;
   TicGame game = TicGame();
 
+  Timer? timer;
+  final int fixTimer = 10;
+
+  int changingTime = 10;
+
   @override
   void initState() {
     super.initState();
     showingPatterns = List.filled(9, '');
+
+    _startTimer();
+  }
+
+  void _startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (changingTime > 0) {
+        setState(() {
+          changingTime--;
+        });
+      } else {
+        // log('Time up. Next player turn.');
+
+        _timeUp();
+
+        if (gameResult != null) {
+          _pauseTimer();
+        } else {
+          changingTime = fixTimer;
+        }
+      }
+    });
+  }
+
+  void _timeUp() {
+    _setRandomValue();
+    _toggleTurnAndText();
+  }
+
+  void _pauseTimer() {
+    timer!.cancel();
+  }
+
+  void _setRandomValue() {
+    String combinedPattern = xPlayerPattern + oPlayerPattern;
+    String randomString = game.getRandomValue(pattern: combinedPattern);
+
+    if (isXPlayerTurn) {
+      xPlayerPattern += randomString;
+
+      showingPatterns[int.parse(randomString)] = 'X';
+    } else {
+      oPlayerPattern += randomString;
+
+      showingPatterns[int.parse(randomString)] = 'O';
+    }
   }
 
   void _toggleTurnAndText() {
@@ -47,6 +99,8 @@ class _TicTacToeViewState extends State<TicTacToeView> {
       setState(() {
         gameResult = 'Won by Player ${isXPlayerTurn ? 'X' : 'O'}';
       });
+
+      _pauseTimer();
 
       Alert(
         context: context,
@@ -88,7 +142,11 @@ class _TicTacToeViewState extends State<TicTacToeView> {
       gameResult = null;
 
       showingPatterns = List.filled(9, '');
+
+      changingTime = fixTimer;
     });
+
+    _startTimer();
   }
 
   @override
@@ -117,12 +175,12 @@ class _TicTacToeViewState extends State<TicTacToeView> {
                       children: [
                         Center(
                           child: Text(
-                            '10',
+                            changingTime.toString(),
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
-                        const CircularProgressIndicator(
-                          value: 50 / 60,
+                        CircularProgressIndicator(
+                          value: changingTime / fixTimer,
                           backgroundColor: Colors.white,
                           color: Colors.red,
                         ),
@@ -159,6 +217,7 @@ class _TicTacToeViewState extends State<TicTacToeView> {
                           )),
                       onPressed: () {
                         if (showingPatterns[touchedIndex] == '') {
+                          changingTime = fixTimer;
                           if (isXPlayerTurn) {
                             showingPatterns[touchedIndex] = 'X';
 
@@ -195,8 +254,8 @@ class _TicTacToeViewState extends State<TicTacToeView> {
                       },
                       child: Center(
                         child: Text(
-                          showingPatterns[
-                              touchedIndex], // show touched index value replacing by X or O
+                          // show touched index value replacing by X or O
+                          showingPatterns[touchedIndex],
                           style: Theme.of(context)
                               .textTheme
                               .headlineLarge!
