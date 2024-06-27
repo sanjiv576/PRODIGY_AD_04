@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class TicGame {
   Map<int, String> possiblePatterns = {
     1: '048',
@@ -56,7 +58,36 @@ class TicGame {
 
     return false;
   }
+
+  String getRandomValue({required String pattern}) {
+    String randomString = _generateRandomInt().toString();
+
+    pattern.split('').forEach((char) {
+      if (char == randomString) {
+        randomString = _generateRandomInt().toString();
+      }
+    });
+
+    return randomString;
+  }
+
+  int _generateRandomInt() => Random().nextInt(10); // 0 to 9
 }
+
+// void main() {
+//   TicGame game = TicGame();
+//   String patterns = '063';
+
+//   for(int i = 0; i<= 5; i++){
+
+//     String result = game.getRandomValue(patterns);
+//     patterns += result;
+
+//     print(patterns);
+
+//   }
+// }
+
 
 // void main() {
 //   TicGame ticGame = TicGame();
