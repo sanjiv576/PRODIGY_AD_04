@@ -10,7 +10,7 @@ class TicGame {
     8: '345',
   };
 
-  bool gameOver(String pattern) {
+  bool gameOver({required String pattern}) {
     // for storing matching keys
 
     List<int> matchingKeys = [];
@@ -21,6 +21,7 @@ class TicGame {
       // print(eachItem);
 
       // print('-------Matching List----------');
+
       // iterate map
       for (MapEntry possiblePattern in possiblePatterns.entries) {
         String value = possiblePattern.value;
@@ -35,9 +36,7 @@ class TicGame {
       // print('--------NEXT item-------');
     });
 
-    // printing list for checking
-
-    print('Pattern $pattern : $matchingKeys');
+    // print('Pattern $pattern : $matchingKeys');
 
     for (int i in matchingKeys) {
       // print(i);
@@ -48,7 +47,7 @@ class TicGame {
         }
       }
       if (counter == 3) {
-        print('$pattern pattern matched with key $i');
+        // print('$pattern pattern matched with key $i');
 
         // game over
         return true;
@@ -59,23 +58,23 @@ class TicGame {
   }
 }
 
-void main() {
-  TicGame ticGame = TicGame();
+// void main() {
+//   TicGame ticGame = TicGame();
 
-  String pattern1 = '6578'; // must true
-  String pattern2 = '13462'; // must true
-  String pattern3 = '123'; // must false
-  String pattern4 = '2416'; // must true
+//   String pattern1 = '6578'; // must true
+//   String pattern2 = '13462'; // must true
+//   String pattern3 = '123'; // must false
+//   String pattern4 = '2416'; // must true
 
-  bool result1 = ticGame.gameOver(pattern1);
-  print('Game over ? result 1 = $result1');
+//   bool result1 = ticGame.gameOver(pattern1);
+//   print('Game over ? result 1 = $result1');
 
-  bool result2 = ticGame.gameOver(pattern2);
-  print('Game over ? result 1 = $result2');
+//   bool result2 = ticGame.gameOver(pattern2);
+//   print('Game over ? result 1 = $result2');
 
-  bool result3 = ticGame.gameOver(pattern3);
-  print('Game over ? result 1 = $result3');
+//   bool result3 = ticGame.gameOver(pattern3);
+//   print('Game over ? result 1 = $result3');
 
-  bool result4 = ticGame.gameOver(pattern4);
-  print('Game over ? result 1 = $result4');
-}
+//   bool result4 = ticGame.gameOver(pattern4);
+//   print('Game over ? result 1 = $result4');
+// }
