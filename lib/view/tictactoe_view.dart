@@ -8,6 +8,11 @@ class TicTacToeView extends StatefulWidget {
 }
 
 class _TicTacToeViewState extends State<TicTacToeView> {
+  List<int> playerX = [];
+  List<int> playerO = [];
+
+  bool isPlayerXTurn = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +34,22 @@ class _TicTacToeViewState extends State<TicTacToeView> {
                       'Player X',
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Center(
+                          child: Text(
+                            '10',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                        const CircularProgressIndicator(
+                          value: 50 / 60,
+                          backgroundColor: Colors.white,
+                          color: Colors.red,
+                        ),
+                      ],
+                    ),
                     Text(
                       'Player O',
                       style: Theme.of(context).textTheme.headlineLarge,
@@ -36,9 +57,11 @@ class _TicTacToeViewState extends State<TicTacToeView> {
                   ],
                 ),
               ),
+
+              // TicTacToe board UI
               Container(
                 decoration: const BoxDecoration(
-                    color: Colors.green,
+                    color: Colors.blue,
                     border: Border(
                       bottom: BorderSide.none,
                     )),
@@ -59,15 +82,26 @@ class _TicTacToeViewState extends State<TicTacToeView> {
                       child: Center(
                         child: Text(
                           index.toString(),
+                          // 'X',
                           style: Theme.of(context)
                               .textTheme
                               .headlineLarge!
-                              .copyWith(fontSize: 60),
+                              .copyWith(
+                                  fontSize: 70,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.red),
                         ),
                       ),
                     );
                   }),
                 ),
+              ),
+              Text(
+                'Player X won',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineLarge!
+                    .copyWith(color: Colors.green),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
